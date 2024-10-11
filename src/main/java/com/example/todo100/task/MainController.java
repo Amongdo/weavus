@@ -1,11 +1,13 @@
-package com.example.todo100.controller;
+package com.example.todo100.task;
 
-import com.example.todo100.repository.TaskRepository;
-import com.example.todo100.service.TaskService;
+import com.example.todo100.service.task.TaskEntity;
+import com.example.todo100.service.task.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -15,7 +17,7 @@ public class MainController {
 
     @GetMapping("/")
     public String index(Model model) {
-        var home = taskService.findall();
+        List<TaskEntity> home = taskService.findAll();
         model.addAttribute("home", home);
         return "index";
     }

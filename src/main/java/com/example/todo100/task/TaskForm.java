@@ -1,8 +1,7 @@
-package com.example.todo100.controller;
+package com.example.todo100.task;
 
-import com.example.todo100.service.TaskEntity;
+import com.example.todo100.service.task.TaskEntity;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -16,13 +15,15 @@ public class TaskForm {
 
     @NotBlank
     private String description;
+    private String datetime;
 
     public TaskEntity toEntityId(long id) {
 
         return new TaskEntity(
                 id,
                 getSummary(),
-                getDescription()
+                getDescription(),
+                getDatetime()
         );
     }
 
@@ -30,14 +31,17 @@ public class TaskForm {
         return new TaskEntity(
                 null,
                 getSummary(),
-                getDescription()
+                getDescription(),
+                getDatetime()
+
         );
     }
 
     public static TaskForm fromEntity(TaskEntity taskEntity) {
         return new TaskForm(
                 taskEntity.getSummary(),
-                taskEntity.getDescription()
+                taskEntity.getDescription(),
+                taskEntity.getDatetime()
         );
     }
 }

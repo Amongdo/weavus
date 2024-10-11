@@ -1,4 +1,4 @@
-package com.example.todo100.service;
+package com.example.todo100.service.task;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -15,4 +15,5 @@ public class TaskEntity {
     private Long id;
     private String summary;
     private String description;
+    private String datetime;
 }

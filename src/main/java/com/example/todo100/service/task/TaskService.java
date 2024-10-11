@@ -1,6 +1,6 @@
-package com.example.todo100.service;
+package com.example.todo100.service.task;
 
-import com.example.todo100.repository.TaskRepository;
+import com.example.todo100.repository.task.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +15,7 @@ public class TaskService {
     private final TaskRepository taskRepository;
 
 
-    public List<TaskEntity> findall() {
+    public List<TaskEntity> findAll() {
         return taskRepository.findAll();
     }
 
@@ -35,4 +35,6 @@ public class TaskService {
     public Optional<TaskEntity> findById(long taskId) {
         return taskRepository.findById(taskId);
     }
+
+
 }

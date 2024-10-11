@@ -1,15 +1,5 @@
 <!DOCTYPE html>
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
-<!-- 부트스트랩 CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<!-- 부트스트랩 JS -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<!-- Bootstrap Datepicker CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
-<!-- Bootstrap Datepicker JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -29,48 +19,24 @@
         <tr>
             <th>번호</th>
             <th>할 일</th>
-            <th>상태</th>
+            <th>날 짜</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="task : ${home}">
             <td>
-                <a th:href="@{/tasks/{id}/editForm(id=${task.id})}" th:text="'#' + ${task.id}"></a>
+                <a th:href="@{/tasks/{id}(id=${task.id})}" th:text="'#' + ${task.id}"></a>
             </td>
             <td>
-                <a th:href="@{/tasks/{id}/editForm(id=${task.id})}" th:text="${task.summary}"></a>
+                <a th:href="@{/tasks/{id}(id=${task.id})}" th:text="${task.summary}"></a>
+            </td>
+            <td>
+                <a th:href="@{/tasks/{id}(id=${task.id})}" th:text="${task.datetime}"></a>
             </td>
 
         </tr>
         </tbody>
     </table>
-
-    <!--    <li th:each="task : ${home}">-->
-<!--        <h1 th:text="${task.summary}">Summary here</h1>-->
-<!--    </li>-->
 </div>
-<div class="container mt-3">
-    <h2>Bootstrap Datepicker Example</h2>
-    <div class="form-group">
-        <label for="date">Select Date:</label>
-        <div class="input-group date" id="datepicker">
-            <input type="text" class="form-control" placeholder="YYYY-MM-DD">
-            <div class="input-group-append">
-                <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-            </div>
-        </div>
-    </div>
-</div>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('#datepicker').datepicker({
-            format: "yyyy-mm-dd", // 날짜 포맷 설정
-            autoclose: true, // 날짜 선택 후 자동으로 닫힘
-            todayHighlight: true // 오늘 날짜 하이라이트
-        });
-    });
-</script>
-
 </body>
 </html>
