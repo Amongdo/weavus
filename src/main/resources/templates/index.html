@@ -15,35 +15,16 @@
     <link rel="stylesheet" href="css/style.css">
 
     <title></title>
-    <style>
-        .calendar-container {
-            height: 500px; /* 캘린더 높이를 고정 */
-            max-width: 100%; /* 캘린더 최대 너비 설정 */
-            overflow-y: auto;
-            margin-top: 20px;
-            position: relative;
-        }
-
-        .calendar {
-            max-height: 400px;
-            width: 100%;
-            overflow: hidden;
-        }
-
-        .footer-calendar {
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            background-color: #f8f9fa;
-            padding: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
 </head>
 <body>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.kr.min.js"></script>
 
 <div class="container mt-5">
     <div class="row">
-        <!-- TO-DO LIST -->
         <div class="col-md-6">
             <h2>TO-DO LIST</h2>
             <a th:href="@{/tasks/create}" class="btn btn-primary mb-3">생성</a>
@@ -70,54 +51,28 @@
                 </tbody>
             </table>
         </div>
-
-        <!-- CALENDAR -->
-
     </div>
 </div>
-<!--<div class="container mt-10">-->
-<!--    <div class="col-md-6">-->
-<!--        <h2>Calendar</h2>-->
-<!--        <div id='calendar-container'>-->
-<!--            <div id='calendar'></div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
+<div>
+    <div>
+        <label class="input-group-text" for="startdate">
+            <i class="fa-solid fa-calender"></i>
+        </label>
+        <input type="text" id="startdate" class="form-control datepicker" placeholder="시작날짜">
+    </div>
+</div>
+<script>
+    $(function (){
+        $('.datepicker').datepicker({
+            startDate : new Date('2022'),
+            calendarWeeks: false,
+            todayHighlight: true,
+            autoclose: true,
+            format : "yyyy-mm-dd",
+            language : "ko"
 
-<!--&lt;!&ndash; JavaScript Libraries &ndash;&gt;-->
-<!--<script src="js/jquery-3.3.1.min.js"></script>-->
-<!--<script src="js/popper.min.js"></script>-->
-<!--<script src="js/bootstrap.min.js"></script>-->
-
-<!--&lt;!&ndash; FullCalendar JS &ndash;&gt;-->
-<!--<script src='fullcalendar/packages/core/main.js'></script>-->
-<!--<script src='fullcalendar/packages/interaction/main.js'></script>-->
-<!--<script src='fullcalendar/packages/daygrid/main.js'></script>-->
-<!--<script src='fullcalendar/packages/timegrid/main.js'></script>-->
-<!--<script src='fullcalendar/packages/list/main.js'></script>-->
-
-<!--<script>-->
-<!--    document.addEventListener('DOMContentLoaded', function() {-->
-<!--        var calendarEl = document.getElementById('calendar');-->
-
-<!--        var calendar = new FullCalendar.Calendar(calendarEl, {-->
-<!--            plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],-->
-<!--            height: 500, // 캘린더 높이를 조정하여 화면을 차지하지 않도록 합니다.-->
-<!--            header: {-->
-<!--                left: 'prev,next today',-->
-<!--                center: 'title',-->
-<!--                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'-->
-<!--            },-->
-<!--            defaultView: 'dayGridMonth',-->
-<!--            navLinks: true,-->
-<!--            editable: true,-->
-<!--            eventLimit: true,-->
-<!--        });-->
-
-<!--        calendar.render();-->
-<!--    });-->
-<!--</script>-->
-
-<!--<script src="js/main.js"></script>-->
+        });
+    })
+</script>
 </body>
 </html>
