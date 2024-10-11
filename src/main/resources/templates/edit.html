@@ -6,6 +6,30 @@
 
 </head>
 <body>
-<p th:text= "${edit}">잘가요.손님</p>
+<div class="container">
+
+  <form action="/edit" method="post">
+    <!--     <div class="form-group">-->
+    <!--       <label for="summary">요약</label>-->
+    <!--       <input type="text" id="summary" summary="summary" placeholder="30자 이내로 입력해주세요">-->
+    <!--     </div>-->
+    <div class="form-group " >
+      <label for="summaryInput" class="form-label">概要</label>
+      <input type="text" id="summaryInput" th:field="{summary}" placeholder="30자 이내로 입력해주세요" class="form-control" th:errorclass="is-invalid">
+      <span th:errors="{summary}" class="invalid-feedback"></span>
+    </div>
+    <div class="form-group">
+      <label for="descriptionInput" class="form-label">상세</label>
+      <textarea rows="10" id="descriptionInput" th:field="{description}" class="form-control" th:errorclass="is-invalid"></textarea>
+      <span th:errors="{description}" class="invalid-tooltip"></span>
+
+    </div>
+    <button type="submit" th:href="/">변경</button>
+    <button type="cancel" th:href="/">취소</button>
+  </form>
+</div>
+
+
+
 </body>
 </html>

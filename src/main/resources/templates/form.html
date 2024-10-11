@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/layout}"
+>
+<head>
+  <meta charset="UTF-8">
+  <title th:text="${mode == 'create'} ? 'taskCreae' : 'taskEdit'"></title>
+</head>
+<body>
+<section layout:fragment="content">
+  <div>
+    <form th:action="${mode == 'CREAT'} ? @{/tasks} : @{/tasks/{id}(id=${id})}"
+          th:method="${mode == 'CREAT'} ? post : put"
+          th:object="${taskForm}">
+      <div class="form-group " >
+        <label for="summaryInput" class="form-label">概要</label>
+        <input type="text" id="summaryInput" th:field="*{summary}" class="form-control" th:errorclass="is-invalid">
+        <span th:errors="*{summary}" class="invalid-feedback"></span>
+      </div>
+      <div class="form-group">
+        <label for="descriptionInput" class="form-label">詳細</label>
+        <textarea rows="10" id="descriptionInput" th:field="*{description}" class="form-control" th:errorclass="is-invalid"></textarea>
+        <span th:errors="*{description}" class="invalid-tooltip"></span>
+
+      </div>
+      <div>
+        <button type="submit" class="btn btn-primary" th:text="${mode == 'CREAT'} ? 'CREAT': 'EDIT'"></button>
+        <button th:href="${mode == 'CREAT'} ? @{/tasks} : @{/tasks/{id}(id=${id})}" class="btn btn-primary">back</button>
+      </div>
+    </form>
+  </div>
+</section>
+</body>
+</html>
