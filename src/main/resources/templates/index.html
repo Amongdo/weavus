@@ -2,41 +2,122 @@
 <html lang="ja" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Calendar Selection</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500&display=swap" rel="stylesheet">
+
+    <link href='fullcalendar/packages/core/main.css' rel='stylesheet' />
+    <link href='fullcalendar/packages/daygrid/main.css' rel='stylesheet' />
+
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <title></title>
+    <style>
+        .calendar-container {
+            height: 500px; /* 캘린더 높이를 고정 */
+            max-width: 100%; /* 캘린더 최대 너비 설정 */
+            overflow-y: auto;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .calendar {
+            max-height: 400px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .footer-calendar {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #f8f9fa;
+            padding: 10px;
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-    <h2>Hello</h2>
-    <a th:href="@{/tasks/create}">생성</a>
 
+<div class="container mt-5">
+    <div class="row">
+        <!-- TO-DO LIST -->
+        <div class="col-md-6">
+            <h2>TO-DO LIST</h2>
+            <a th:href="@{/tasks/create}" class="btn btn-primary mb-3">생성</a>
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th>No</th>
+                    <th>To do</th>
+                    <th>Date</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="task : ${home}">
+                    <td>
+                        <a th:href="@{/tasks/{id}(id=${task.id})}" th:text="'#' + ${task.id}"></a>
+                    </td>
+                    <td>
+                        <a th:href="@{/tasks/{id}(id=${task.id})}" th:text="${task.summary}"></a>
+                    </td>
+                    <td>
+                        <a th:href="@{/tasks/{id}(id=${task.id})}" th:text="${task.datetime}"></a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
 
+        <!-- CALENDAR -->
 
-    <h2>TO-DO LIST</h2>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>번호</th>
-            <th>할 일</th>
-            <th>날 짜</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="task : ${home}">
-            <td>
-                <a th:href="@{/tasks/{id}(id=${task.id})}" th:text="'#' + ${task.id}"></a>
-            </td>
-            <td>
-                <a th:href="@{/tasks/{id}(id=${task.id})}" th:text="${task.summary}"></a>
-            </td>
-            <td>
-                <a th:href="@{/tasks/{id}(id=${task.id})}" th:text="${task.datetime}"></a>
-            </td>
-
-        </tr>
-        </tbody>
-    </table>
+    </div>
 </div>
+<!--<div class="container mt-10">-->
+<!--    <div class="col-md-6">-->
+<!--        <h2>Calendar</h2>-->
+<!--        <div id='calendar-container'>-->
+<!--            <div id='calendar'></div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; JavaScript Libraries &ndash;&gt;-->
+<!--<script src="js/jquery-3.3.1.min.js"></script>-->
+<!--<script src="js/popper.min.js"></script>-->
+<!--<script src="js/bootstrap.min.js"></script>-->
+
+<!--&lt;!&ndash; FullCalendar JS &ndash;&gt;-->
+<!--<script src='fullcalendar/packages/core/main.js'></script>-->
+<!--<script src='fullcalendar/packages/interaction/main.js'></script>-->
+<!--<script src='fullcalendar/packages/daygrid/main.js'></script>-->
+<!--<script src='fullcalendar/packages/timegrid/main.js'></script>-->
+<!--<script src='fullcalendar/packages/list/main.js'></script>-->
+
+<!--<script>-->
+<!--    document.addEventListener('DOMContentLoaded', function() {-->
+<!--        var calendarEl = document.getElementById('calendar');-->
+
+<!--        var calendar = new FullCalendar.Calendar(calendarEl, {-->
+<!--            plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],-->
+<!--            height: 500, // 캘린더 높이를 조정하여 화면을 차지하지 않도록 합니다.-->
+<!--            header: {-->
+<!--                left: 'prev,next today',-->
+<!--                center: 'title',-->
+<!--                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'-->
+<!--            },-->
+<!--            defaultView: 'dayGridMonth',-->
+<!--            navLinks: true,-->
+<!--            editable: true,-->
+<!--            eventLimit: true,-->
+<!--        });-->
+
+<!--        calendar.render();-->
+<!--    });-->
+<!--</script>-->
+
+<!--<script src="js/main.js"></script>-->
 </body>
 </html>

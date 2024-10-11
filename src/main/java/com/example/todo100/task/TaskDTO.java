@@ -12,7 +12,6 @@ public class TaskDTO {
     long id;
 
     private String summary;
-
     private String description;
     private String datetime;
 
