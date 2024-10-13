@@ -1,19 +1,19 @@
-package com.example.todo100.task;
+package com.example.todo100.controller;
 
-import com.example.todo100.service.task.TaskEntity;
+import com.example.todo100.service.TaskEntity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+
+import static com.mysql.cj.protocol.a.MysqlTextValueDecoder.getDate;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 public class TaskForm {
-    @NotBlank
+
     @Size(max = 256, message = "max font = 256")
     private String summary;
-
-    @NotBlank
     private String description;
     private String datetime;
 

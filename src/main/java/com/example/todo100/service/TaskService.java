@@ -1,6 +1,6 @@
-package com.example.todo100.service.task;
+package com.example.todo100.service;
 
-import com.example.todo100.repository.task.TaskRepository;
+import com.example.todo100.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,15 +19,15 @@ public class TaskService {
         return taskRepository.findAll();
     }
 
-    @Transactional
+
     public void update(TaskEntity entity) {
         taskRepository.save(entity);
     }
-    @Transactional
+
     public void delete(long id) {
         taskRepository.deleteById(id);
     }
-    @Transactional
+
     public void create(TaskEntity newEntity) {
         taskRepository.save(newEntity);
     }
@@ -37,4 +37,7 @@ public class TaskService {
     }
 
 
+    public List<TaskEntity> findByDatetime(String datetime) {
+        return taskRepository.findByDatetime(datetime);
+    }
 }

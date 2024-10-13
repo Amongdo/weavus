@@ -1,6 +1,6 @@
-package com.example.todo100.task;
+package com.example.todo100.controller;
 
-import com.example.todo100.service.task.TaskService;
+import com.example.todo100.service.TaskService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Controller;
@@ -20,7 +20,7 @@ public class TaskController {
 
     @GetMapping("/create")
     public String showCreationForm(@ModelAttribute TaskForm form, Model model) {
-        model.addAttribute("mode", "CREAT");
+        model.addAttribute("mode", "CREATE");
         return "form";
     }
 

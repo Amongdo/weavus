@@ -19,7 +19,6 @@
 </head>
 <body>
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.kr.min.js"></script>
 
@@ -32,7 +31,7 @@
                 <thead>
                 <tr>
                     <th>No</th>
-                    <th>To do</th>
+                    <th >To do</th>
                     <th>Date</th>
                 </tr>
                 </thead>
@@ -56,23 +55,30 @@
 <div>
     <div>
         <label class="input-group-text" for="startdate">
-            <i class="fa-solid fa-calender"></i>
+            <i class="fa-solid fa-calendar"></i>
         </label>
-        <input type="text" id="startdate" class="form-control datepicker" placeholder="시작날짜">
     </div>
 </div>
+<input type="text" id="startdate" class="form-control datepicker" placeholder="시작날짜">
+
 <script>
-    $(function (){
-        $('.datepicker').datepicker({
-            startDate : new Date('2022'),
+    $(document).ready(function () { // $(document).ready()로 페이지 로드 후 초기화
+        // Datepicker 초기화
+        $('#startdate').datepicker({ // #startdate 요소에만 초기화 적용
+            startDate: new Date('2022'),
             calendarWeeks: false,
             todayHighlight: true,
             autoclose: true,
-            format : "yyyy-mm-dd",
-            language : "ko"
-
+            format: "yyyy-mm-dd",
+            language: "ko"
+        }).on('changeDate', function (e) {
+            // 날짜가 선택되면 해당 날짜로 페이지를 다시 요청 (쿼리 파라미터로 날짜 전송)
+            var selectedDate = $('#startdate').val();
+            window.location.href = '/?datetime=' + selectedDate;
         });
-    })
+    });
 </script>
+
+
 </body>
 </html>

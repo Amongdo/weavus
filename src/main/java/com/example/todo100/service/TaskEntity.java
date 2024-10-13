@@ -1,4 +1,4 @@
-package com.example.todo100.service.task;
+package com.example.todo100.service;
 
 import jakarta.persistence.*;
 import lombok.*;

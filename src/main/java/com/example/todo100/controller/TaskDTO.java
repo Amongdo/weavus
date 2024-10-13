@@ -1,6 +1,6 @@
-package com.example.todo100.task;
+package com.example.todo100.controller;
 
-import com.example.todo100.service.task.TaskEntity;
+import com.example.todo100.service.TaskEntity;
 import lombok.*;
 
 

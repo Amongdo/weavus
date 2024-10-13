@@ -7,11 +7,15 @@
 <head>
   <meta charset="UTF-8">
   <title th:text="${mode == 'create'} ? 'taskCreae' : 'taskEdit'"></title>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.kr.min.js"></script>
 </head>
 <body>
 <section layout:fragment="content">
   <div>
-    <form th:action="${mode == 'CREAT'} ? @{/tasks} : @{/tasks/{id}/update(id=${id})}"
+    <form th:action="${mode == 'CREATE'} ? @{/tasks} : @{/tasks/{id}/update(id=${id})}"
           method="post"
           th:object="${taskForm}">
       <div class="form-group " >
@@ -25,47 +29,31 @@
         <span th:errors="*{description}" class="invalid-tooltip"></span>
 
       </div>
-      <div class="container mt-5">
-        <div class="form-group">
-          <label for="datetimepicker">날짜 및 시간 선택:</label>
-          <div class="input-group date" id="datetimepicker" data-target-input="nearest">
-            <input type="text" class="form-control datetimepicker-input" data-target="#datetimepicker" placeholder="날짜와 시간을 선택하세요"/>
-            <div class="input-group-append" data-target="#datetimepicker" data-toggle="datetimepicker">
-              <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-            </div>
-          </div>
+      <div>
+        <div>
+          <label class="input-group-text" for="datetimeInput">
+            <i class="fa-solid fa-calendar"></i>
+          </label>
+          <input type="text" id="datetimeInput" th:field="*{datetime}" class="form-control datepicker" placeholder="시작날짜" autocomplete="off">
         </div>
       </div>
-
-      <script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
-      <script th:src="@{/webjars/bootstrap/5.0.0/js/bootstrap.bundle.min.js}"></script>
-      <script th:src="@{/webjars/momentjs/2.29.1/moment.min.js}"></script>
-      <script th:src="@{/webjars/tempus-dominus/5.39.0/js/tempus-dominus.min.js}"></script>
-      <script th:src="@{/webjars/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js}"></script>
-
       <script>
         $(document).ready(function () {
-            $('#datetimepicker').datetimepicker({
-                format: 'YYYY-MM-DD HH:mm',  // 날짜와 시간 형식 설정
-                icons: {
-                    time: 'fa fa-clock',
-                    date: 'fa fa-calendar',
-                    up: 'fa fa-chevron-up',
-                    down: 'fa fa-chevron-down'
-                }
-                 $('#dReqTime,#dResetTime').datetimepicker({
-
-              format: 'HH:mm:ss'
-
-           });
-
+            // 특정 ID로 초기화 대상 지정
+            $('#datetimeInput').datepicker({
+                startDate: new Date('2022'),
+                calendarWeeks: false,
+                todayHighlight: true,
+                autoclose: true,
+                format: "yyyy-mm-dd",
+                language: "ko"
             });
         });
       </script>
 
       <div>
-        <button type="submit" class="btn btn-primary" th:text="${mode == 'CREAT'} ? 'CREAT': 'EDIT'"></button>
-        <a th:href="${mode == 'CREAT'} ? @{/} : @{/tasks/{id}(id=${id})}" class="btn btn-primary">back</a>
+        <button type="submit" class="btn btn-primary" th:text="${mode == 'CREATE'} ? 'CREATE': 'EDIT'"></button>
+        <a th:href="${mode == 'CREATE'} ? @{/} : @{/tasks/{id}(id=${id})}" class="btn btn-primary">back</a>
       </div>
     </form>
   </div>
