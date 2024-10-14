@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <title>Title</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
 </head>
+
 <body>
 <div class="container">
 
   <form action="/edit" method="post">
-    <div class="form-group " >
+    <div class="form-group ">
       <label for="summaryInput" class="form-label">概要</label>
       <input type="text" id="summaryInput" th:field="{summary}" placeholder="30자 이내로 입력해주세요" class="form-control" th:errorclass="is-invalid">
       <span th:errors="{summary}" class="invalid-feedback"></span>
@@ -28,4 +30,5 @@
 
 
 </body>
+
 </html>

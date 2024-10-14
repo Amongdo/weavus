@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 @Controller
 @RequiredArgsConstructor
 public class MainController {
@@ -28,10 +26,18 @@ public class MainController {
         } else {
             // 사용자가 날짜를 선택하지 않은 경우, 현재 날짜를 기본으로 데이터를 조회
             String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            
             home = taskService.findByDatetime(currentDate);
         }
+        // 완료된 작업 수와 전체 작업 수 계산
+        long completedTasks = home.stream().filter(task -> "DONE".equals(task.getStatus().name())).count();
+        long totalTasks = home.size();
+
+        // 달성률 계산
+        double completionRate = (totalTasks == 0) ? 0 : ((double) completedTasks / totalTasks) * 100;
+
+        // 모델에 작업 목록과 달성률 추가
         model.addAttribute("home", home);
+        model.addAttribute("completionRate", completionRate);
         return "index";
     }
 

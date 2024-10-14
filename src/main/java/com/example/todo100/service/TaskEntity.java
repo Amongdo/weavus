@@ -16,4 +16,8 @@ public class TaskEntity {
     private String summary;
     private String description;
     private String datetime;
+    @Enumerated(EnumType.STRING)
+    private TaskStatus status; // 새로운 status 필드 추가
+//    private boolean completed;
+
 }

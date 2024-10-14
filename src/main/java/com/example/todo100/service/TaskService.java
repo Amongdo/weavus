@@ -3,7 +3,7 @@ package com.example.todo100.service;
 import com.example.todo100.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
 
 import java.util.List;
 import java.util.Optional;
@@ -39,5 +39,9 @@ public class TaskService {
 
     public List<TaskEntity> findByDatetime(String datetime) {
         return taskRepository.findByDatetime(datetime);
+    }
+
+    public TaskEntity save(TaskEntity task) {
+        return taskRepository.save(task);
     }
 }

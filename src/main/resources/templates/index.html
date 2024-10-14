@@ -16,42 +16,65 @@
 
     <title></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+
 </head>
+
 <body>
 <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.kr.min.js"></script>
 
 <div class="container mt-5">
-    <div class="row">
-        <div class="col-md-6">
-            <h2>TO-DO LIST</h2>
+    <div class="row justify-content-center">
+        <!-- To-Do List Table -->
+        <div class="col-md-8">
+            <h2 class="text-center">TO-DO LIST</h2>
             <a th:href="@{/tasks/create}" class="btn btn-primary mb-3">생성</a>
             <table class="table table-bordered">
                 <thead>
                 <tr>
                     <th>No</th>
-                    <th >To do</th>
-                    <th>Date</th>
+                    <th>To do</th>
+                    <th>Status</th>
+                    <th>Update</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="task : ${home}">
-                    <td>
-                        <a th:href="@{/tasks/{id}(id=${task.id})}" th:text="'#' + ${task.id}"></a>
-                    </td>
+                    <td th:text="'#' + ${task.id}"></td>
                     <td>
                         <a th:href="@{/tasks/{id}(id=${task.id})}" th:text="${task.summary}"></a>
                     </td>
+                    <td th:text="${task.status}"></td>
                     <td>
-                        <a th:href="@{/tasks/{id}(id=${task.id})}" th:text="${task.datetime}"></a>
+                        <form th:action="@{/tasks/updateStatus}" method="post">
+                            <input type="hidden" th:name="id" th:value="${task.id}" />
+
+                            <select name="status">
+                                <option value="IN_PROGRESS" th:selected="${task.status} == 'IN_PROGRESS'">진행중</option>
+                                <option value="DONE" th:selected="${task.status} == 'DONE'">완료</option>
+                                <option value="NOT_DONE" th:selected="${task.status} == 'NOT_DONE'">미완료</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary btn-sm">변경</button>
+                        </form>
                     </td>
                 </tr>
                 </tbody>
             </table>
         </div>
+        <!-- Completion Rate Section -->
+        <div class="col-md-4 d-flex align-items-center">
+            <div class="card w-100">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Completion Rate</h5>
+                    <p class="card-text" th:text="${completionRate} + '%'">0%</p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+<!-- Calendar Input Group -->
 <div>
     <div>
         <label class="input-group-text" for="startdate">
@@ -62,7 +85,7 @@
 <input type="text" id="startdate" class="form-control datepicker" placeholder="시작날짜">
 
 <script>
-    $(document).ready(function () { // $(document).ready()로 페이지 로드 후 초기화
+    $(document).ready(function() { // $(document).ready()로 페이지 로드 후 초기화
         // Datepicker 초기화
         $('#startdate').datepicker({ // #startdate 요소에만 초기화 적용
             startDate: new Date('2022'),
@@ -71,14 +94,12 @@
             autoclose: true,
             format: "yyyy-mm-dd",
             language: "ko"
-        }).on('changeDate', function (e) {
+        }).on('changeDate', function(e) {
             // 날짜가 선택되면 해당 날짜로 페이지를 다시 요청 (쿼리 파라미터로 날짜 전송)
             var selectedDate = $('#startdate').val();
             window.location.href = '/?datetime=' + selectedDate;
         });
     });
 </script>
-
-
 </body>
 </html>

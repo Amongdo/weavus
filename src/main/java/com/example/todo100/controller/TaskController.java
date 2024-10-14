@@ -1,8 +1,12 @@
 package com.example.todo100.controller;
 
+import com.example.todo100.repository.TaskRepository;
+import com.example.todo100.service.TaskEntity;
 import com.example.todo100.service.TaskService;
+import com.example.todo100.service.TaskStatus;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -71,4 +75,17 @@ public class TaskController {
         return "/detail";
     }
 
-}
+    @PostMapping("/updateStatus")
+    public String updateStatus(@RequestParam Long id, @RequestParam String status) {
+        Optional<TaskEntity> optionalTask = taskService.findById(id);
+        if (optionalTask.isPresent()) {
+            TaskEntity task = optionalTask.get();
+            task.setStatus(TaskStatus.valueOf(status));
+            taskService.save(task);
+        }
+        return "redirect:/";
+        }
+    }
+
+
+

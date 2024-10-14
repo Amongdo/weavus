@@ -1,21 +1,21 @@
 package com.example.todo100.controller;
 
 import com.example.todo100.service.TaskEntity;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import com.example.todo100.service.TaskStatus;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.*;
-
-import static com.mysql.cj.protocol.a.MysqlTextValueDecoder.getDate;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 public class TaskForm {
 
-    @Size(max = 256, message = "max font = 256")
     private String summary;
     private String description;
     private String datetime;
+    @Enumerated(EnumType.STRING)
+    private TaskStatus status= TaskStatus.IN_PROGRESS;
 
     public TaskEntity toEntityId(long id) {
 
@@ -23,7 +23,8 @@ public class TaskForm {
                 id,
                 getSummary(),
                 getDescription(),
-                getDatetime()
+                getDatetime(),
+                getStatus()
         );
     }
 
@@ -32,8 +33,8 @@ public class TaskForm {
                 null,
                 getSummary(),
                 getDescription(),
-                getDatetime()
-
+                getDatetime(),
+                getStatus()
         );
     }
 
@@ -41,7 +42,8 @@ public class TaskForm {
         return new TaskForm(
                 taskEntity.getSummary(),
                 taskEntity.getDescription(),
-                taskEntity.getDatetime()
+                taskEntity.getDatetime(),
+                taskEntity.getStatus()
         );
     }
 }

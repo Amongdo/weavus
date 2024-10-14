@@ -1,32 +1,28 @@
 <!DOCTYPE html>
-<html lang="ja"
-      xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/layout}"
->
+<html lang="ja" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}">
+
 <head>
   <meta charset="UTF-8">
-  <title th:text="${mode == 'create'} ? 'taskCreae' : 'taskEdit'"></title>
+  <title th:text="${mode == 'CREATE'} ? 'taskCreate' : 'taskEdit'"></title>
 
   <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.kr.min.js"></script>
 </head>
+
 <body>
 <section layout:fragment="content">
   <div>
-    <form th:action="${mode == 'CREATE'} ? @{/tasks} : @{/tasks/{id}/update(id=${id})}"
-          method="post"
-          th:object="${taskForm}">
-      <div class="form-group " >
-        <label for="summaryInput" class="form-label">概要</label>
+    <form th:action="${mode == 'CREATE'} ? @{/tasks} : @{/tasks/{id}/update(id=${id})}" method="post" th:object="${taskForm}">
+      <div class="form-group ">
+        <label for="summaryInput" class="form-label">Summary</label>
         <input type="text" id="summaryInput" th:field="*{summary}" class="form-control" th:errorclass="is-invalid">
         <span th:errors="*{summary}" class="invalid-feedback"></span>
       </div>
       <div class="form-group">
-        <label for="descriptionInput" class="form-label">詳細</label>
+        <label for="descriptionInput" class="form-label">Description</label>
         <textarea rows="10" id="descriptionInput" th:field="*{description}" class="form-control" th:errorclass="is-invalid"></textarea>
-        <span th:errors="*{description}" class="invalid-tooltip"></span>
+        <span th:errors="*{description}" class="invalid-feedback"></span>
 
       </div>
       <div>
@@ -38,16 +34,27 @@
         </div>
       </div>
       <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
+            let today = new Date();
             // 특정 ID로 초기화 대상 지정
             $('#datetimeInput').datepicker({
-                startDate: new Date('2022'),
+                startDate: today,
                 calendarWeeks: false,
                 todayHighlight: true,
                 autoclose: true,
                 format: "yyyy-mm-dd",
                 language: "ko"
             });
+            // Form Validation (Summary와 날짜 검증)
+        $('form').on('submit', function(event) {
+            let summary = $('#summaryInput').val().trim();
+            let datetime = $('#datetimeInput').val().trim();
+
+             if (summary === "" || datetime === "") {
+            event.preventDefault(); // 폼 제출 방지
+            alert("Summary와 시작 날짜를 모두 입력해주세요.");
+        }
+        });
         });
       </script>
 
@@ -61,4 +68,5 @@
 
 
 </body>
+
 </html>
