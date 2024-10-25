@@ -7,9 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.List;
 @Controller
 @RequiredArgsConstructor
@@ -19,55 +18,37 @@ public class MainController {
 
     @GetMapping("/")
     public String index(@RequestParam(value = "datetime", required = false) String datetime, Model model) {
-        List<TaskEntity> home;
-        if (datetime != null && !datetime.isEmpty()) {
-            // 사용자가 특정 날짜를 선택한 경우, 해당 날짜에 맞는 데이터를 조회
-            home = taskService.findByDatetime(datetime);
-        } else {
-            // 사용자가 날짜를 선택하지 않은 경우, 현재 날짜를 기본으로 데이터를 조회
-            String currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            home = taskService.findByDatetime(currentDate);
-        }
-        // 완료된 작업 수와 전체 작업 수 계산
-        long completedTasks = home.stream().filter(task -> "DONE".equals(task.getStatus().name())).count();
-        long totalTasks = home.size();
+        // 서비스에서 작업 목록을 가져옴
+        List<TaskEntity> home = taskService.getTasksByDate(datetime);
+        // 서비스에서 달성률을 계산
+        double completionRate = taskService.calculateCompletionRate(home);
 
-        // 달성률 계산
-        double completionRate = (totalTasks == 0) ? 0 : ((double) completedTasks / totalTasks) * 100;
-
+        //현재시간
+        LocalTime currentTime = LocalTime.now();
+        //설정시간과 현재시간의 차이 계산
+        home.forEach(task -> {
+            LocalTime taskTime = task.getTime();
+            if (taskTime != null) {
+                //시간 차이를 구함
+                Duration duration = Duration.between(currentTime, taskTime);
+                long hours = Math.abs(duration.toHours());
+                //구간에 따른 클래스명 설정
+                String tm;
+                if (hours < 0) {
+                    tm = "gray"; // 과거 시간 (음수일 때)
+                } else if (hours == 0) {
+                    tm = "red"; // 1시간 이내 (0 시간)
+                } else if (hours >= 1 && hours < 5) {
+                    tm = "orange"; // 1시간 ~ 5시간
+                } else {
+                    tm = ""; // 기본값
+                }
+                task.setColor(tm);
+            }
+        });
         // 모델에 작업 목록과 달성률 추가
         model.addAttribute("home", home);
         model.addAttribute("completionRate", completionRate);
         return "index";
     }
-
-
-
 }
-
-
-
-    //API  형식. 객체를 리턴하게 될 땐, 제이슨방식으로 출력해줌
-//    @GetMapping("abd")
-//    @ResponseBody
-//    public Hello helloApi(@RequestParam("name") String name) {
-//        Hello hello = new Hello();
-//        hello.setName(name);
-//        return hello;
-//    }
-//
-//    static class Hello {
-//        private String name;
-//
-//        public String getName() {
-//            return name;
-//        }
-//
-//        public void setName(String name) {
-//            this.name = name;
-//        }
-//    }
-
-
-
-//

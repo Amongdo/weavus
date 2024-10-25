@@ -3,6 +3,8 @@ package com.example.todo100.service;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalTime;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -16,8 +18,8 @@ public class TaskEntity {
     private String summary;
     private String description;
     private String datetime;
+    private LocalTime time;
     @Enumerated(EnumType.STRING)
     private TaskStatus status; // 새로운 status 필드 추가
-//    private boolean completed;
-
+    private String color;
 }

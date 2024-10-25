@@ -1,11 +1,11 @@
-package com.example.todo100.controller;
+package com.example.todo100.service;
 
-import com.example.todo100.service.TaskEntity;
-import com.example.todo100.service.TaskStatus;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+
+import java.time.LocalTime;
 
 
 @NoArgsConstructor
@@ -13,14 +13,16 @@ import lombok.*;
 @Data
 public class TaskDTO {
 
-    long id;
+    private Long id;
     @NotBlank
     private String summary;
     private String description;
     @NotBlank
     private String datetime;
+    private LocalTime time;
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
+    private String color;
 
 
 
@@ -30,7 +32,9 @@ public class TaskDTO {
                 entity.getSummary(),
                 entity.getDescription(),
                 entity.getDatetime(),
-                entity.getStatus()
+                entity.getTime(),
+                entity.getStatus(),
+                entity.getColor()
                 );
 
     }

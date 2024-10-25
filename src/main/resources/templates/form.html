@@ -7,10 +7,21 @@
 
   <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.kr.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/locales/bootstrap-datepicker.ko.min.js"></script>
+  <style>
+    .popup {
+            background-color: white;  /* 팝업 배경색 */
+            padding: 20px;           /* 여백 */
+            border-radius: 8px;      /* 모서리 둥글게 */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); /* 그림자 */
+            width: 300px;            /* 팝업 너비 */
+            text-align: center;      /* 텍스트 중앙 정렬 */
+        }
+  </style>
 </head>
 
 <body>
+<div class="popup">
 <section layout:fragment="content">
   <div>
     <form th:action="${mode == 'CREATE'} ? @{/tasks} : @{/tasks/{id}/update(id=${id})}" method="post" th:object="${taskForm}">
@@ -23,7 +34,6 @@
         <label for="descriptionInput" class="form-label">Description</label>
         <textarea rows="10" id="descriptionInput" th:field="*{description}" class="form-control" th:errorclass="is-invalid"></textarea>
         <span th:errors="*{description}" class="invalid-feedback"></span>
-
       </div>
       <div>
         <div>
@@ -45,28 +55,81 @@
                 format: "yyyy-mm-dd",
                 language: "ko"
             });
-            // Form Validation (Summary와 날짜 검증)
-        $('form').on('submit', function(event) {
-            let summary = $('#summaryInput').val().trim();
-            let datetime = $('#datetimeInput').val().trim();
 
-             if (summary === "" || datetime === "") {
-            event.preventDefault(); // 폼 제출 방지
-            alert("Summary와 시작 날짜를 모두 입력해주세요.");
-        }
-        });
         });
       </script>
 
+
+        <div class="form-group mr-2">
+          <label for="hourSelect" class="mr-2">시간 선택:</label>
+          <select id="hourSelect" name="hour" class="form-control">
+            <option value="" disabled selected>시간</option>
+            <!-- 0부터 23까지 시간 옵션 추가 -->
+            <th:block th:each="hour : ${#numbers.sequence(0, 23)}">
+              <option th:value="${hour}" th:text="${hour}">0</option>
+            </th:block>
+          </select>
+        </div>
+
+      <div class="form-group">
+        <label for="minuteSelect" class="mr-2 ml-3">분 선택:</label>
+        <select id="minuteSelect" name="minute" class="form-control">
+          <option value="" disabled selected>분</option>
+          <!-- 0부터 50까지 10분 단위로 분 옵션 추가 -->
+          <th:block th:each="minute : ${#numbers.sequence(0, 50, 10)}">
+            <option th:value="${minute}" th:text="${minute}">0</option>
+          </th:block>
+        </select>
+      </div>
+
+
       <div>
-        <button type="submit" class="btn btn-primary" th:text="${mode == 'CREATE'} ? 'CREATE': 'EDIT'"></button>
-        <a th:href="${mode == 'CREATE'} ? @{/} : @{/tasks/{id}(id=${id})}" class="btn btn-primary">back</a>
+        <button type="submit" class="btn btn-primary" th:text="${mode == 'CREATE'} ? 'CREATE' : 'EDIT'">
+        </button>
+        <a href="javascript:void(0);" onclick="window.close();" class="btn btn-primary">back</a>
       </div>
     </form>
   </div>
 </section>
 
+</div>
+<script>
+  $(document).ready(function() {
+      // 폼 제출 시 AJAX로 전송
+      $('form').on('submit', function(event) {
+    event.preventDefault(); // 폼 기본 제출 방지
+    var form = $(this);
 
+    $.ajax({
+        type: 'POST',
+        url: form.attr('action'),
+         data: form.serialize(), // 폼 데이터 직렬화
+        success: function(response) {
+            if (window.opener) {
+                window.opener.location.href = '/tasks'; // 부모 창 리다이렉트
+            }
+            window.close(); // 새 창 닫기
+        },
+        error: function(xhr, status, error) {
+    console.log(xhr.responseText); // 에러 응답 내용 확인
+    alert('summary와 시작날짜를 선택해 주세요');
+}
+    });
+});
+
+
+      // Datepicker 초기화
+      let today = new Date();
+      $('#datetimeInput').datepicker({
+          startDate: today,
+          calendarWeeks: false,
+          todayHighlight: true,
+          autoclose: true,
+          format: "yyyy-mm-dd",
+          language: "ko"
+      });
+  });
+</script>
 </body>
 
 </html>

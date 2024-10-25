@@ -10,15 +10,52 @@
 <section layout:fragment="content">
     <div>
         <a class="btn btn-primary" th:href="@{/tasks/{id}/editForm(id=${task.id})}">EDIT</a>
-        <form th:action="@{/tasks/{id}/delete(id=${task.id})}" method="post" style="display: inline;" onclick="return confirm('정말 삭제?')">
-            <button class="btn btn-danger" type="submit">DELETE</button>
+            <form th:action="@{/tasks/{id}/delete(id=${task.id})}" method="post" style="display: inline;" id="deleteForm" onsubmit="handleDelete(event)">
+                <button class="btn btn-danger" type="submit">DELETE</button>
         </form>
+        <a href="javascript:void(0);" class="btn btn-primary" onclick="closeWindow()">back</a>
     </div>
     <div th:object="${task}" class="mt-3">
-        <h2 th:text="'#' + *{id} + ' ' + *{summary}"></h2>
+        <h2 th:text="*{summary}"></h2>
         <pre th:text="*{description}"></pre>
+        <pre th:text="*{#temporals.format(time, 'HH:mm')}"></pre>
     </div>
 </section>
+<script>
+    // 창 닫기 및 부모 페이지 갱신 함수
+    function closeWindow() {
+        if (window.opener) {
+            window.opener.location.href = '/tasks';  // 부모 페이지 갱신
+        }
+        window.close();  // 현재 창 닫기
+    }
+
+    // DELETE 요청 처리 함수
+    // DELETE 요청 처리 함수
+function handleDelete(event) {
+    event.preventDefault();  // 기본 폼 제출 방지
+    var form = document.getElementById('deleteForm');
+
+    if (confirm('정말 삭제?')) {
+        // AJAX로 DELETE 요청 전송
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", form.action, true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                // 부모 페이지(index) 갱신 및 현재 팝업 창(detail) 닫기
+                if (window.opener) {
+                    window.opener.location.href = '/';  // 부모 페이지 갱신
+                }
+                window.close();  // 현재 창 닫기
+            } else if (xhr.status !== 200) {
+                alert('Error while deleting the task');
+            }
+        };
+        xhr.send();  // 폼 데이터 전송
+    }
+}
+</script>
 </body>
 
 </html>
